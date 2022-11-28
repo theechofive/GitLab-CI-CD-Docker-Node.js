@@ -1,5 +1,6 @@
 # GitLab-CI-CD-Docker-Node.JS
 
+Add files from this repository to your project root directory
 
 #### Runner settings:
  - executor = "docker"
