@@ -2,6 +2,24 @@
 
 Add files from this repository to your project root directory
 
+Example for NestJS
+```
+|_src
+  |_application
+    |_...
+  |_common
+    |_...
+  |_database
+    |_...
+  |_main.ts
+|_templates
+  |_...
+|_package.json
+|_.env
+|_docker-compose.yml
+|_.gitlab-ci.yml
+|_Dockerfile
+```
 #### Runner settings:
  - executor = "docker"
  
