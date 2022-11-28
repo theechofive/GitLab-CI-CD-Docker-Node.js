@@ -10,9 +10,8 @@ To run container with your project docker-compose.yml uses variables from .env, 
 ### DOCKER ENV ###
 CONTAINER_NAME = app_name
 CONTAINER_PORT = 3001
-...
-%your env strings%
 ### DOCKER ENV ###
+%your env strings%
 ```
 > If you don't want to use a web server(nginx,apache) you can run the container on port 80
 
