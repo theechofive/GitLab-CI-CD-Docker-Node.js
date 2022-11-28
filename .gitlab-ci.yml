@@ -1,0 +1,104 @@
+stages:
+  - install
+  - test
+  - build
+  - deploy
+
+### INSTALL ###
+install_dependencies:
+  image: node:14-alpine3.16
+  stage: install
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - node_modules
+  script:
+    - yarn install
+
+### TEST ###
+run_unit_tests:
+  stage: test
+  needs:
+    - install_dependencies
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - node_modules
+  script:
+      - echo "Running tests"
+    # - yarn test
+  # artifacts:
+  #   when: always
+#     paths:
+#       - app/junit.xml
+#     reports:
+#       junit: app/junit.xml
+
+### BUILD ###
+run_build:
+  stage: build
+  needs:
+    - run_unit_tests
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - .env
+      - node_modules
+      - dist
+  only:
+    - develop
+    - /^v.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:0|[a-z]*)$/
+  script:
+    - >
+      if [ $CI_COMMIT_BRANCH == "develop" ]; then
+        echo 'Use develop .env'
+        cp ${ENV_DEV} .env
+      else
+        echo 'Use master .env'
+        cp ${ENV_PROD} .env
+      fi
+    - yarn build
+
+### DEPLOY TO DEVELOP ###
+run_deploy_dev:
+  image: docker/compose:latest
+  stage: deploy
+  needs:
+    - run_build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - .env
+      - node_modules
+      - dist
+  only:
+    - develop
+  tags:
+    - develop
+  script:
+    - docker-compose down
+    - docker-compose up -d --build
+    
+### DEPLOY TO PROD ###
+run_deploy_prod:
+  image: docker/compose:latest
+  stage: deploy
+  needs:
+    - run_build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - .env
+      - node_modules
+      - dist
+  only:
+    - master
+    - /^v.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:0|[a-z]*)$/
+  tags:
+    - production
+  except:
+    - branches
+  script:
+    - docker-compose down
+    - docker-compose up -d --build
+    
