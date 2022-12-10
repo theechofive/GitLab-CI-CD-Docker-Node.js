@@ -26,9 +26,7 @@ Example for NestJS
 |_.gitlab-ci.yml
 |_Dockerfile
 ```
-#### Runner settings:
- - executor = "docker"
- 
+
 #### Gitlab CI/CD Variables
 To run container with your project docker-compose.yml uses variables from .env, add these lines to your variables (.env)
 ```
@@ -60,6 +58,19 @@ CONTAINER_PORT = 3001
 - v.1.0.1test
 - v.1.0.11
 - v.1.0.111
+
+### Settings
+#### Install stage
+...
+#### Test Stage
+...
+#### Build Stage
+...
+#### Deploy Stages
+...
+#### Runner settings
+ - executor = "docker"
+ - defaul image = ...
 
 #### Deploy to develop or create tag
 ![image](https://user-images.githubusercontent.com/32634559/204368983-1f9ae39d-b008-49c8-bd43-b35e83fa7b63.png)
