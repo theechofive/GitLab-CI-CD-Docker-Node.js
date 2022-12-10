@@ -1,5 +1,11 @@
 # GitLab-CI-CD-Docker-Node.JS
 
+GitLab CI/CD template with GitLab-Runner to deploy a project in a docker container on a VPS.
+
+
+For example, the deployment was made to two VPS, one for development, the second for production.
+
+
 Add files from this repository to your project root directory
 
 Example for NestJS
@@ -52,6 +58,8 @@ CONTAINER_PORT = 3001
 ###### Examples tags
 - v.1.0.1
 - v.1.0.1test
+- v.1.0.11
+- v.1.0.111
 
 #### Deploy to develop or create tag
 ![image](https://user-images.githubusercontent.com/32634559/204368983-1f9ae39d-b008-49c8-bd43-b35e83fa7b63.png)
