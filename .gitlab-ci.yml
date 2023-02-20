@@ -4,47 +4,44 @@ stages:
   - build
   - deploy
 
-### INSTALL ###
+## INSTALL ###
 install_dependencies:
   image: node:14-alpine3.16
   stage: install
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - node_modules
   script:
     - yarn install
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 30 mins
 
-### TEST ###
+## TEST ###
 run_unit_tests:
+  image: node:14-alpine3.16
   stage: test
   needs:
     - install_dependencies
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - node_modules
+  dependencies:
+    - install_dependencies
   script:
-      - echo "Running tests"
     # - yarn test
-  # artifacts:
-  #   when: always
-#     paths:
-#       - app/junit.xml
-#     reports:
-#       junit: app/junit.xml
+    - echo "Running tests"
+  artifacts:
+    paths:
+      - junit.xml
+      - node_modules/
+    reports:
+      junit: junit.xml
+    expire_in: 30 mins
 
 ### BUILD ###
 run_build:
+  image: node:14-alpine3.16
   stage: build
   needs:
     - run_unit_tests
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - .env
-      - node_modules
-      - dist
+  dependencies:
+    - run_unit_tests
   only:
     - develop
     - /^v.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:0|[a-z]*)$/
@@ -58,6 +55,15 @@ run_build:
         cp ${ENV_PROD} .env
       fi
     - yarn build
+  artifacts:
+    paths:
+      - .env
+      - node_modules
+      - docker-compose.yml
+      - Dockerfile
+      - package.json
+      - dist/
+    expire_in: 1 day
 
 ### DEPLOY TO DEVELOP ###
 run_deploy_dev:
@@ -65,12 +71,10 @@ run_deploy_dev:
   stage: deploy
   needs:
     - run_build
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - .env
-      - node_modules
-      - dist
+  dependencies:
+    - run_build
+  variables:
+    GIT_STRATEGY: none
   only:
     - develop
   tags:
@@ -78,27 +82,22 @@ run_deploy_dev:
   script:
     - docker-compose down
     - docker-compose up -d --build
-    
-### DEPLOY TO PROD ###
+
+### DEPLOY TO PRODUCTION ###
 run_deploy_prod:
   image: docker/compose:latest
   stage: deploy
   needs:
     - run_build
-  cache:
-    key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - .env
-      - node_modules
-      - dist
+  dependencies:
+    - run_build
+  variables:
+    GIT_STRATEGY: none
   only:
     - master
     - /^v.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:0|[a-z]*)$/
-  tags:
-    - production
   except:
     - branches
   script:
     - docker-compose down
     - docker-compose up -d --build
-    
