@@ -58,11 +58,11 @@ run_build:
   artifacts:
     paths:
       - .env
-      - node_modules
+      - node_modules/
+      - dist/
+      - package.json
       - docker-compose.yml
       - Dockerfile
-      - package.json
-      - dist/
     expire_in: 1 day
 
 ### DEPLOY TO DEVELOP ###
