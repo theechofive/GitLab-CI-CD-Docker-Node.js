@@ -1,4 +1,4 @@
-# GitLab-CI-CD-Docker-Node.JS
+# GitLab CI/CD Docker Node.js
 
 GitLab CI/CD template with GitLab-Runner for deploying a project in a docker container to a VPS using.
 
@@ -95,6 +95,18 @@ If you do not specify an image in the stages, the default image will be used, wh
 #### Runner settings
  - executor = "docker"
  - default image = ...
+
+##### config.toml
+/etc/gitlab-runner/config.toml
+```
+...
+volumes = ["/cache"]
+...
+```
+change to
+```
+volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache"]
+```
 
 #### Deploy to develop or create tag
 ![image](https://user-images.githubusercontent.com/32634559/204368983-1f9ae39d-b008-49c8-bd43-b35e83fa7b63.png)
