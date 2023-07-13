@@ -28,7 +28,7 @@ run_unit_tests:
     - echo "Running tests"
   artifacts:
     paths:
-      - junit.xml
+    # - junit.xml
       - node_modules/
     reports:
       junit: junit.xml
