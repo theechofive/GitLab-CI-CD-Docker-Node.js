@@ -96,6 +96,8 @@ run_deploy_prod:
   only:
     - master
     - /^v.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:0|[a-z]*)$/
+  tags:
+    - production
   except:
     - branches
   script:
