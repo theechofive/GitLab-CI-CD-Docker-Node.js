@@ -118,6 +118,18 @@ volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache"]
 ![image](https://user-images.githubusercontent.com/32634559/220139608-b9ca6a1b-30d8-4691-9408-3b875527733f.png)
 ![image](https://user-images.githubusercontent.com/32634559/220139512-32eb6acf-7614-4f2f-a546-c94759640cc9.png)
 
+#### docker ps -a
+![image](https://github.com/theechofive/GitLab-CI-CD-Docker-Node.js/assets/32634559/703e7c37-9e80-4cb5-bbba-4be0a4765dec)
+
+### x.x.x.x:port
+![image](https://github.com/theechofive/GitLab-CI-CD-Docker-Node.js/assets/32634559/2c861fcd-9942-4cc2-880c-abae8dab9db5)
+
+### With domain
+![image](https://github.com/theechofive/GitLab-CI-CD-Docker-Node.js/assets/32634559/6b3a6e48-fa87-422e-99e0-f3c34cb432bc)
+
+![image](https://github.com/theechofive/GitLab-CI-CD-Docker-Node.js/assets/32634559/c5a7d32c-6dd8-4662-8360-a3e8d9557559)
+
+
 
 ##### Future plans:
 - Optimize Stages
